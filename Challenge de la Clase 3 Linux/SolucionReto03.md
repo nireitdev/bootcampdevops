@@ -4,6 +4,8 @@
 Como no aclara que tipo de link se hace decidí hacer el "soft"
 
 ```
+#!/bin/bash
+
 cd ~
 mkdir nueva_carpeta
 cd nueva_carpeta/
