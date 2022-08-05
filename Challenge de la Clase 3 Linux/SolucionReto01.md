@@ -1,4 +1,4 @@
-# Resolucion Clase 3 - Bash Script
+# Resolucion Challenge Clase 3 - Reto 1
 
 
 ## Reto 1 - Linux Ejercicios 1,2 y 3
