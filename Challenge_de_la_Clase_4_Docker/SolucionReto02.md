@@ -28,4 +28,8 @@ Comprobacion de usuario, password y database creada:
 ![Comprobación de usuario, password y database creada](./img/sol2_02.jpg)
 
 
+No se puede borrar la imagen "mariadb" si el contenedor está actualmente corriendo
+![mariadb corriendo](./img/sol2_03.jpg)
+
+
 [Comandos en un archivo bash SolucionReto02.sh](./SolucionReto02.sh)
