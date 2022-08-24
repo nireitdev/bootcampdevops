@@ -4,21 +4,22 @@ Crear un contenedor con contenido estatico en una imagen nginx:alpine y subirla 
 
 
 Cracion Dockerfile y de Index.html:
-![Output Mariadb](./img/sol3_01.jpg)
+![src](./img/sol3_01.jpg)
 
 Creacion y build del Dockerfile:
-![Output Mariadb](./img/sol3_02.jpg)
+![build](./img/sol3_02.jpg)
 
 Comprobacion de la ejecución:
-![Output Mariadb](./img/sol3_03.jpg)
+![ejecución](./img/sol3_03.jpg)
 
 Comprobación en el navegador:
-![Output Mariadb](./img/sol3_04.jpg)
+![navegador](./img/sol3_04.jpg)
 
 Finalmente, push a Docker Hub de la imagen:
-![Output Mariadb](./img/sol3_05.jpg)
+![push](./img/sol3_05.jpg)
 
-
+Imagen en Docker Hub:
+![DockerHub](./img/sol3_06.jpg)
 
 ## Archivos
 
