@@ -32,8 +32,50 @@ docker run -it --network bridge \
     mongo-express:latest
 ````
 
-
 Express
 ![src](./img/sol6_01.jpg)
 
+### TODO
+
+Otra solución para la importación automatizada del archivo Json hubiera sido montar otra imagen docker con la herramienta ``mongoimport`` y parámetros la ip, usuarios, contraseña, database y colección. Pero para esto me tengo que asegurar que la imagen docker mongo se levantó correctamente.
+
+## Nginx
+
+Utilizando un Docerfile con la última version de **nginx:alpine** :
+
+````
+FROM nginx:alpine
+
+LABEL mantainer="nire.it.dev"
+LABEL project="ej06-nginx"
+
+COPY bootcamp-web /usr/share/nginx/html
+
+````
+
+Build y run de la imagen docker:
+
+````
+docker run -d --rm --name bootcamp-web -p 9999:80 bootcamp-web
+````
+
+Comprobar que se haya copiado bien los archivos:
+
+````
+docker exec bootcamp-web ls /usr/share/nginx/html
+````
+
+Navegador:
+![src](./img/sol6_02.jpg)
+
+## Limpieza
+
+````
+docker stop mongodb
+docker stop express
+docker stop bootcamp-web
+docker rm mongodb
+docker rm express
+docker rm bootcamp-web
+````
 
