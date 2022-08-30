@@ -1,4 +1,4 @@
-# Solucion Reto Bonus 7 Clase Docker
+# Solucion Reto Bonus 8 Clase Docker
 
 Ejecución completa utilizando un script Bash de una app hecha en flask. Luego la imagen se sube a docker hub.
 
