@@ -2,12 +2,8 @@
 set -e
 
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
-
     CREATE USER myapp WITH PASSWORD 'myapp';
     CREATE DATABASE myappdb;
-    GRANT ALL PRIVILEGES ON DATABASE myappdb TO myapp;
-    ALTER ROLE myapp SUPERUSER;
-
 
     \c myappdb
 
@@ -19,5 +15,8 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 
     INSERT INTO tabla VALUES(1, 't1', 'Tabla 1');
     INSERT INTO tabla VALUES(2,'t2' , 'Tabla 2');
-    
+
+
+        GRANT SELECT ON TABLE  tabla TO  myapp;
 EOSQL
+

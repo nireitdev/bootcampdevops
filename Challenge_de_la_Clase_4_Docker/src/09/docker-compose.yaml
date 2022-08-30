@@ -1,23 +1,21 @@
+
 version: "3"
 
 services:
-  
+
   #Postgres
-  mydb: 
+  mydb:
     container_name: mydb
     build: ./postgres
     networks:
       - appnet
     ports:
       - "5432:5432"
-    
     restart: always
-
-    environment: 
-      #Pass obligatorio para el usuario postgres
+    environment:
       POSTGRES_PASSWORD: postgres
 
-  
+
   # app
   myapp:
     container_name: myapp
@@ -27,15 +25,15 @@ services:
       - appnet
     ports:
       - "5000:5000"
-    
+
     environment:
       #Conexion a la BDD con usuario restrictivo
       POSTGRES_DB: ${DATABASE}
-      POSTGRES_USER: ${DBUSER} 
-      POSTGRES_PASSWORD: ${DBPASSW} 
+      POSTGRES_USER: ${DBUSER}
+      POSTGRES_PASSWORD: ${DBPASSW}
       POSTGRES_HOST: mydb
       POSTGRES_PORT: 5432
-     
+
 
 
 networks:
