@@ -4,18 +4,28 @@ El problema reside en crear un archivo Docker-compose.yml que despliegue un sist
 
 Una de las mejoras que se puede plantear es la utilizacin de un archivo `.env` que cargue todas las variables de entorno.
 
-Un bug que encontée en el buildeo de la imagen de postgres es el usuario no tiene los permisos adecuados para acceder a la base `myappdb`. Para que funcione correctamente con usuario de menor privilegios se modifico el script de iniciación de la base de postgres. 
-
-Navegador:
-![src](./img/sol8_01.jpg)
+Además, en el script original `init-db.sh`  el usuario no tiene los permisos adecuados para acceder a la base `myappdb`. Para que en este caso de solo lectura de datos le puse el menor privilegio para hacer consultas "SELECT". 
 
 
-Docker hub
-![src](./img/sol8_02.jpg)
+Source [resolucion 9](./src/09)
 
-## Archivos
 
-Script Bash [resolucion08.sh](./src/08/resolucion08.sh)
+Para ejecutar la solución:
 
-Fix [requiremnt.txt fix](./src/08/requirements-fix.txt)
+````
+git clone https://github.com/nireitdev/bootcampdevops.git
+cd bootcampdevops/Challenge_de_la_Clase_4_Docker/src/09
+docker-compose build
+docker-compose up 
+````
 
+La pagina será visible desde la url `http://localhost:5000`
+
+
+![src](./img/sol9_01.jpg)
+
+Para finalizar:
+
+```
+docker-compose down --rm all
+```
