@@ -21,7 +21,7 @@ services:
   # app
   myapp:
     container_name: myapp
-    build: ../myapp
+    build: ./myapp
 
     networks:
       - appnet
