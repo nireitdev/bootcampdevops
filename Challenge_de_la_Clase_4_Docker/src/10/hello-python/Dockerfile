@@ -1,4 +1,4 @@
-FROM python:3.11-alpine
+FROM python:3.11-rc-alpine
 RUN pip install flask
 RUN pip install pika
 COPY app.py /home/myapp/
