@@ -37,7 +37,7 @@ Finalmente la solución al problema es:
 
 ````
 git clone https://github.com/nireitdev/bootcampdevops.git
-cd bootcampdevops/Challenge_de_la_Clase_4_Docker/src/10
+cd bootcampdevops/Challenge_de_la_Clase_4_Docker/src/10/deployment
 docker-compose build
 docker-compose up 
 ````

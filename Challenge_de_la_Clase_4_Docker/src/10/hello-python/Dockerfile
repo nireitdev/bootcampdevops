@@ -1,4 +1,4 @@
-FROM python:3.11.0a6-slim-buster
+FROM python:3.11-alpine
 RUN pip install flask
 RUN pip install pika
 COPY app.py /home/myapp/
