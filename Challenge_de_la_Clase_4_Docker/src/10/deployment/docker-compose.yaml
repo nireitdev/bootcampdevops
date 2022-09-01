@@ -26,14 +26,12 @@ services:
   
   # hello-node application
   hello-node:
-    build: ../hello-node
-    volumes: 
-      - ../hello-node:/opt/hello-node
+    build: ../hello-node    
     networks:
       - hellodevops-net
     ports:
       - "9443:9443"
-    restart: on-failure
+    #restart: on-failure
     environment:
       RABBITMQ_HOST: mq
       MYSQL_HOST: db
@@ -42,8 +40,6 @@ services:
   # hello-python application
   hello-python:
     build: ../hello-python
-    volumes: 
-      - ../hello-python:/opt/hello-python
     networks:
       - hellodevops-net
     ports:

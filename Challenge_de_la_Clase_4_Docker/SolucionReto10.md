@@ -1,6 +1,6 @@
 # Solucion Reto Bonus 10 Clase Docker
 
-El ejercicio plantea un problema de disponibilidad de servicios. Cuand se levanta la app de NodeJs puede ser que la base de datos en Mysql no esté disponible.
+El ejercicio plantea un problema de disponibilidad de servicios. Cuando se levanta la app de NodeJs puede ser que la base de datos en Mysql no esté disponible.
 
 La solución consiste en detectar fehacientemente que un servicio que depende de otro este levantado.
 
@@ -30,7 +30,22 @@ RUN apk add wait4x
 CMD wait4x tcp  mq:5672 -t 10m &&  python3 /home/myapp/app.py
 ````
 
+## Conflicto entre los Dockerfiles y el archivo Docker-Compose
 
+Se observa que en los Dockerfiles de build de las app de Node y Python se copia los archivos fuentes y luego , en el caso de NodeJs, se instalan las dependencias.
+
+Sin embargo ocurre un conflicto cuando se monta los volumenes desde el `docker-compose.yml` sobreescribiendo todo el directorio que se utiliza para las apps. 
+
+En el caso particular de la app de Node, se pisa el directorio `node_modules` y por lo tanto la aplicación no se ejecuta correctamente y  termina con un error de que no encuentra las dependencias.
+
+**Posibles Soluciones**: 
+- montar/copiar los directorios de la Apps desde los Dockerfiles y se elimina del ``docker-compose.yml``
+
+- se elimina la copia de los directorios desde el Dockerfile y se monta desde el ``docker-compose.yml`` y posteriormene se agrega la sentencia de compose ``command:`` para que ejecute, por ej, ``npm install``
+
+En este caso particular decido **eliminar** el montado de los volumenes desde el  ``docker-compose.yml``
+
+Otra opción talvez sería pasar todo al  ``docker-compose.yml`` y eliminar los Dockerfiles. No me parece tan **KISS** y seguramente lo dejaré para probar a futuro.
 
 ## Ejecutar la solución:
 Finalmente la solución al problema es:
