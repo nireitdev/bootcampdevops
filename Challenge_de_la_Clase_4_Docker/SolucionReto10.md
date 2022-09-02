@@ -1,22 +1,33 @@
 # Solucion Reto Bonus 10 Clase Docker
 
-El ejercicio plantea un problema de disponibilidad de servicios. Cuando se levanta la app de NodeJs puede ser que la base de datos en Mysql no esté disponible.
+El ejercicio plantea un problema de disponibilidad de servicios. Cuando se levanta la app de NodeJs puede ser que la base de datos en Mysql no esté disponible.- 
 
-La solución consiste en detectar fehacientemente que un servicio que depende de otro este levantado.
+Además se observa que la aplicación de NodeJs no funciona correctamente  XD .-
+
+## Disponibilidad de servicios
+
+La solución consiste en detectar *fehacientemente* la disponibilización de un servicio y que luego otro servicio dependiente se inicie en forma sincronizada.
+
+**Importante:**
+- La aplicación NodeJs depende de los servicios Mysql y MQTT.
+- La aplicación Python sólo depende del servicio MQTT.
+
+
+Docker-Compose provee el comando ``depends_on:`` para proveer guardas de inicios entre contenedores. Esto es, un contenedor sólo iniciara cuando los otros de cuales depende se hayan iniciado. Este comando sólo sirve para inicios de contenedores y no para verificar disponibilidad del servicio que provee la herramienta dockerizada. En otras palabras, no verifica si el servicio de Mysql se inició correctamente en el puerto 3306, sino que **sólo verifica que el contenedor arrancó correctamente**.
 
 Investigué varias herramientas, muchas en bash y otras en Go. Elegí `Wait4x` que permite verificar el funcionamiento de servicios TCP en general y otros en forma particular tal como Mysql y RabbitMQ. 
 
-RTFM [Wait4X](https://wait4x.dev/) ç
+RTFM [Wait4X](https://wait4x.dev/)
 [Github] (https://github.com/atkrad/wait4x)
 
-**Lo bueno**: existe paquetes directamente instalables en la imagenes de Alpine Linux.
+**Lo bueno**: los paquetes se instalan directamente con el administrador de paquetes de Alpine Linux.
 
-**Lo malo**: sólo tiene la version 0.4 en los paquetes Alpine, pero que es suficiente para este ejercicio.
+**Lo malo**: sólo tiene la version 0.4 en los paquetes Alpine, pero es suficiente para este ejercicio.
 
-Si se desea automatizar la descarga y utilizar todas las *features* que provee en un Dockerfile se debere utilizar la herramientas `wget` para descargar la ultima version del binario (v2.4) y `tar` para descomprimirlo dentro de la imagen.
+La version actualizada 2.4 de Wait4X provee testeos de disponibilidad especificas para Rabbit, Mongodb, Redis, etc.- Si se desea isntalar la última version, entonces es necesario automatizar la descarga e instalacion directamente desde la pagina Git. Se debere utilizar la herramientas `wget` para descargar la ultima version del binario  y `tar` para descomprimirlo dentro del contenedor.
 
 
-Entonces para verificar que se cumnle las condiciones para la app de Nodejs se debería agregar al Dockerfile:
+Para verificar que se cumnle las condiciones para la app de Nodejs se debería agregar al Dockerfile:
 
 ````
 RUN apk add wait4x
@@ -32,11 +43,11 @@ CMD wait4x tcp  mq:5672 -t 10m &&  python3 /home/myapp/app.py
 
 ## Conflicto entre los Dockerfiles y el archivo Docker-Compose
 
-Se observa que en los Dockerfiles de build de las app de Node y Python se copia los archivos fuentes y luego , en el caso de NodeJs, se instalan las dependencias.
+Se observa que en los Dockerfiles de build de las app de Node y Python se copia los archivos fuentes, y luego , en el caso de NodeJs, se instalan las dependencias.
 
-Sin embargo ocurre un conflicto cuando se monta los volumenes desde el `docker-compose.yml` sobreescribiendo todo el directorio que se utiliza para las apps. 
+Sin embargo ocurre un conflicto cuando se monta los volumenes desde el `docker-compose.yml`, sobreescribiendo todo el directorio que se utiliza para las apps y que se buildeó **anteriormente** con el Dockerfile. 
 
-En el caso particular de la app de Node, se pisa el directorio `node_modules` y por lo tanto la aplicación no se ejecuta correctamente y  termina con un error de que no encuentra las dependencias.
+En el caso particular de la app de Node, se pisa el directorio `node_modules` y por lo tanto la aplicación no se ejecuta correctamente, terminando con un error de que no encuentra las dependencias.
 
 **Posibles Soluciones**: 
 - montar/copiar los directorios de la Apps desde los Dockerfiles y se elimina del ``docker-compose.yml``
@@ -45,25 +56,44 @@ En el caso particular de la app de Node, se pisa el directorio `node_modules` y 
 
 En este caso particular decido **eliminar** el montado de los volumenes desde el  ``docker-compose.yml``
 
-Otra opción talvez sería pasar todo al  ``docker-compose.yml`` y eliminar los Dockerfiles. No me parece tan **KISS** y seguramente lo dejaré para probar a futuro.
+Otra opción sería pasar todo al  ``docker-compose.yml`` y eliminar los Dockerfiles. No me parece **KISS** y seguramente lo dejaré para probar a futuro.
 
 ## Ejecutar la solución:
 Finalmente la solución al problema es:
 
 ````
 git clone https://github.com/nireitdev/bootcampdevops.git
+
 cd bootcampdevops/Challenge_de_la_Clase_4_Docker/src/10/deployment
+
 docker-compose build
 docker-compose up 
 ````
+La pagina será visible desde la url `http://localhost:8080`
 
-La pagina será visible desde la url `http://localhost:5000`
+El acceso a Mysql es visible en localhost puerto 3306:
 
-
-![src](./img/sol10_01.jpg)
+````
+mysql -h 127.0.0.1 -u root -ppassword hello
+````
 
 Para finalizar:
 
 ```
 docker-compose down --rm all
 ```
+
+## Capturas
+
+
+Navegador con la app de python funcionando y el contenido de la base de datos:
+
+![src](./img/sol10_01.jpg)
+
+Captura donde se muestra que la app de Python espera el servicio de MQTT para iniciar :
+
+![src](./img/sol10_02.jpg)
+
+En este caso la app de Node espera la disponibilidad de la base de datos Mysql:
+
+![src](./img/sol10_03.jpg)
