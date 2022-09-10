@@ -4,6 +4,7 @@ LABEL mantainer="nire.it.dev"
 LABEL project="AppPython"
 
 WORKDIR /usr/src/app
+EXPOSE 8080
 
 COPY app .
 
