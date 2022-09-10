@@ -1,11 +1,9 @@
-
 version: "3"
 
 services:
-
   myapp:
     container_name: myapp
-    build: ./app
+    build: .
     networks:
       - mynet
     ports:
@@ -15,8 +13,6 @@ services:
       #Especifico entorno de desarrollo
       FLASK_ENV: "development"
       
-
-
 networks:
-  appnet:
+  mynet:
     driver: bridge
