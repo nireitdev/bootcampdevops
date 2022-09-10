@@ -1,5 +1,7 @@
 FROM python:3.7-alpine 
 
+LABEL mantainer="nire.it.dev"
+LABEL project="AppPython"
 
 WORKDIR /usr/src/app
 
